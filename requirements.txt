@@ -1,0 +1,10 @@
+customtkinter
+langgraph
+python-dotenv
+langchain
+google-genai
+reportlab
+PyPDF2
+python-docx
+pydantic
+pyinstaller
