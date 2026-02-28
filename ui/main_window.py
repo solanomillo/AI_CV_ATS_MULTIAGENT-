@@ -7,6 +7,8 @@ import customtkinter as ctk
 import json
 import re
 from application.graph_builder import construir_grafo
+from tkinter import filedialog
+from tkinter import messagebox
 
 
 class VentanaPrincipal(ctk.CTk):
@@ -16,6 +18,7 @@ class VentanaPrincipal(ctk.CTk):
 
         self.title("AI CV ATS - Sistema Multi-Agente")
         self.geometry("950x650")
+        self.ruta_seleccionada = None
 
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
@@ -32,7 +35,15 @@ class VentanaPrincipal(ctk.CTk):
             font=ctk.CTkFont(size=28, weight="bold")
         )
         titulo.pack(pady=15)
-
+        self.boton_seleccionar = ctk.CTkButton(
+            self,
+            text="Seleccionar CV (.pdf / .docx)",
+            command=self._seleccionar_archivo,
+            width=250,
+            height=40
+        )
+        self.boton_seleccionar.pack(pady=5)
+        
         self.boton_prueba = ctk.CTkButton(
             self,
             text="Analizar CV",
@@ -65,20 +76,54 @@ class VentanaPrincipal(ctk.CTk):
         self.version_box = ctk.CTkTextbox(self.tab_version, width=800, height=350)
         self.version_box.pack(pady=10)
 
+    def _seleccionar_archivo(self):
+        archivo = filedialog.askopenfilename(
+            title="Seleccionar CV",
+            filetypes=[
+                ("Archivos PDF", "*.pdf"),
+                ("Archivos Word", "*.docx")
+            ]
+        )
+
+        if not archivo:
+            return
+
+        if not archivo.lower().endswith((".pdf", ".docx")):
+            messagebox.showerror(
+                "Formato inválido",
+                "Solo se permiten archivos PDF o DOCX."
+            )
+            return
+
+        self.ruta_seleccionada = archivo
+
+        messagebox.showinfo(
+            "Archivo seleccionado",
+            f"CV cargado correctamente:\n{archivo}"
+        )
+            
     def _probar_extractor(self) -> None:
 
+        if not self.ruta_seleccionada:
+            messagebox.showerror(
+                "Error",
+                "Primero debes seleccionar un CV."
+            )
+            return
+
         estado_inicial = {
-            "ruta_cv": "",
-            "texto_extraido": """
-            Desarrollador backend con experiencia en Python.
-            Trabajé en APIs y bases de datos.
-            """,
-            "analisis_ats": None,
-            "version_optimizada": None,
-            "score_final": None,
+            "ruta_cv": self.ruta_seleccionada,
+            "texto_extraido": None,
             "fortalezas": None,
             "errores": None,
             "mejoras": None,
+            "resumen_general": None,
+            "score_llm": None,
+            "score_reglas": None,
+            "score_final": None,
+            "version_optimizada": None,
+            "id_analisis": None,
+            "fecha_analisis": None,
             "pdf_generado": None
         }
 
@@ -124,7 +169,7 @@ class VentanaPrincipal(ctk.CTk):
         fortalezas = resultado.get("fortalezas") or []
         errores = resultado.get("errores") or []
         mejoras = resultado.get("mejoras") or []
-        resumen = resultado.get("analisis_ats", "")
+        resumen = resultado.get("resumen_general", "")
 
         texto = "FORTALEZAS:\n"
         texto += "- " + "\n- ".join(fortalezas) if fortalezas else "No detectadas."

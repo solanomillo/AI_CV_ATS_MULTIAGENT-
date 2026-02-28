@@ -8,3 +8,5 @@ PyPDF2
 python-docx
 pydantic
 pyinstaller
+pypdf
+python-docx
