@@ -153,8 +153,8 @@ AI_CV_ATS_MULTIAGENT/
 
 1️⃣ Clonar el repositorio
 ```bash
-git clone https://github.com/solanomillo/AI-CV-ATS-MultiAgent.git
-cd AI-CV-ATS-MultiAgent
+git clone https://github.com/solanomillo/AI_CV_ATS_MULTIAGENT-.git
+cd AI_CV_ATS_MultiAgent
 ```
 
 2️⃣ Crear entorno virtual
