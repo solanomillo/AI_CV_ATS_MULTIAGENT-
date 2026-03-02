@@ -221,4 +221,14 @@ Para su correcto funcionamiento, el archivo .env debe estar en la misma carpeta 
 
 ---
 
+**Julio Solano**  
+🔗 GitHub: [https://github.com/solanomillo](https://github.com/solanomillo)  
+📧 Email: [solanomillo144@gmail.com](mailto:solanomillo144@gmail.com)
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia **MIT**.
+Podés usarlo, modificarlo y compartirlo libremente.
 
