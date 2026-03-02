@@ -10,6 +10,7 @@ from pydantic import ValidationError
 from domain.state import EstadoCV
 from domain.models import ResultadoATS
 from infrastructure.gemini_client import ClienteGemini
+from utils.text_cleaner import limpiar_markdown, limpiar_lista_textos
 
 
 def agente_analizador_ats(estado: EstadoCV) -> Dict[str, Any]:
@@ -65,6 +66,11 @@ def agente_analizador_ats(estado: EstadoCV) -> Dict[str, Any]:
     try:
         datos = json.loads(respuesta)
         resultado = ResultadoATS(**datos)
+        # 🔥 Limpieza profesional del contenido
+        resultado.fortalezas = limpiar_lista_textos(resultado.fortalezas)
+        resultado.errores = limpiar_lista_textos(resultado.errores)
+        resultado.mejoras = limpiar_lista_textos(resultado.mejoras)
+        resultado.resumen_general = limpiar_markdown(resultado.resumen_general)
 
     except json.JSONDecodeError as error:
         print("Respuesta cruda del modelo:")

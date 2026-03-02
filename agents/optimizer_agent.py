@@ -6,6 +6,7 @@ Multi-nivel según el score final.
 from typing import Dict, Any
 from domain.state import EstadoCV
 from infrastructure.gemini_client import ClienteGemini
+from utils.text_cleaner import limpiar_markdown
 
 
 def agente_optimizador(estado: EstadoCV) -> Dict[str, Any]:
@@ -56,6 +57,7 @@ def agente_optimizador(estado: EstadoCV) -> Dict[str, Any]:
     Requisitos obligatorios:
     - Usa títulos en MAYÚSCULAS.
     - Usa separadores con líneas (-----).
+    - NO uses ** ni * ni # ni guiones de Markdown.
     - Usa viñetas con "•".
     - Mantén formato limpio y profesional.
     - No incluyas explicaciones ni comentarios adicionales.
@@ -74,8 +76,8 @@ def agente_optimizador(estado: EstadoCV) -> Dict[str, Any]:
 
     respuesta = cliente.generar_respuesta(prompt)
 
-    # Guardar versión optimizada en estado
-    estado["version_optimizada"] = respuesta.strip()
+    texto_limpio = limpiar_markdown(respuesta)
+    estado["version_optimizada"] = texto_limpio
 
     print(f"✅ Versión optimizada generada (nivel {nivel})")
 

@@ -29,16 +29,14 @@ class ClienteGemini:
 
     def generar_respuesta(self, prompt: str) -> str:
         """
-        Envía un prompt al modelo y devuelve el texto generado.
+        Envía un prompt al modelo y devuelve el texto generado en formato plano.
         """
         try:
             response = self._client.models.generate_content(
-            model=self._modelo,
-            contents=prompt,
-            config={
-                "response_mime_type": "application/json"
-            }
-        )
+                model=self._modelo,
+                contents=prompt
+                # 🔥 Eliminamos response_mime_type para evitar JSON forzado
+            )
 
             if not response or not response.text:
                 raise ValueError("El modelo no devolvió contenido.")
